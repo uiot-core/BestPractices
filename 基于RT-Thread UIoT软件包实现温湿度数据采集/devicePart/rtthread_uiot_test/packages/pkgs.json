@@ -1,0 +1,17 @@
+[
+ {
+  "path": "/packages/iot/at_device", 
+  "ver": "v2.0.2", 
+  "name": "AT_DEVICE"
+ }, 
+ {
+  "path": "/packages/iot/iot_cloud/ucloud_iot_sdk", 
+  "ver": "latest", 
+  "name": "UCLOUD_IOT_SDK"
+ }, 
+ {
+  "path": "/packages/peripherals/sensors/dht11", 
+  "ver": "latest", 
+  "name": "DHT11"
+ }
+]
