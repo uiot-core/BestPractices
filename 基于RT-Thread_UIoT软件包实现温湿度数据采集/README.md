@@ -238,12 +238,13 @@
       "github.com/ucloud/ucloud-sdk-go/ucloud"
       "github.com/ucloud/ucloud-sdk-go/ucloud/auth"
       "github.com/ucloud/ucloud-sdk-go/ucloud/log"
-      "test/callapi/uiot"
+      "./uiot"
       "time"
    )
    
    var uiotClient *uiot.UIotClient
    
+   // 修改属于你的内容
    const productSN = "your productsn"
    const deviceSN = "your devicesn"
    const deviceSecret = "your devicesecret"
