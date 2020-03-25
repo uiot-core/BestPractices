@@ -15,7 +15,6 @@ var uiotClient *uiot.UIotClient
 
 const productSN = "your productsn"
 const deviceSN = "your devicesn"
-const deviceSecret = "your devicesecret"
 const region = "cn-sh2"
 const zone = "cn-sh2-02"
 const projectid = "your projectid"
