@@ -8,9 +8,7 @@
 
 本文详细介绍基于RT-Thread 使用UCloud IoT软件包实现数据上云，以及设备远程控制。
 
-【视频演示】：[上行--采集温湿度数据上云.mp4](https://www.bilibili.com/video/BV1D7411y71n/)
-
-​                           [下行--业务服务下发控制消息.mp4](https://www.bilibili.com/video/BV1D7411y7HK/)
+【视频演示】：[上行--采集温湿度数据上云.mp4](https://www.bilibili.com/video/BV1D7411y71n/)    [下行--业务服务下发控制消息.mp4](https://www.bilibili.com/video/BV1D7411y7HK/)
 
  
 

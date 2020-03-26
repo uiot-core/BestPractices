@@ -4,7 +4,6 @@
 
 1. [基于RT-Thread UIoT软件包实现温湿度数据采集](./基于RT-Thread_UIoT软件包实现温湿度数据采集)
 
-   【视频演示】：[上行--采集温湿度数据上云.mp4](https://www.bilibili.com/video/BV1D7411y71n/)
+   【视频演示】：[上行--采集温湿度数据上云.mp4](https://www.bilibili.com/video/BV1D7411y71n/)    [下行--业务服务下发控制消息.mp4](https://www.bilibili.com/video/BV1D7411y7HK/)
 
-   ​                           [下行--业务服务下发控制消息.mp4](https://www.bilibili.com/video/BV1D7411y7HK/)
 
