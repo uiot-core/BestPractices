@@ -1,18 +1,26 @@
+
+
+
+
 # 基于RT-Thread UIoT软件包实现温湿度数据采集
 
  
 
 本文详细介绍基于RT-Thread 使用UCloud IoT软件包实现数据上云，以及设备远程控制。
 
+【视频演示】：[上行--采集温湿度数据上云.mp4](https://www.bilibili.com/video/BV1D7411y71n/)
+
+​                           [下行--业务服务下发控制消息.mp4](https://www.bilibili.com/video/BV1D7411y7HK/)
+
  
 
 #### 准备工作：
 
-- **硬件：**开发板STM32F767ZI-Nucleo，通信模块 EC20，温湿度传感器DTH11
+- **硬件：** 开发板STM32F767ZI-Nucleo，通信模块 EC20，温湿度传感器DTH11
 
-- **软件：**RT-Thread Studio，UIoT物联网软件包
+- **软件：** RT-Thread Studio，UIoT物联网软件包
 
-- **云资源：**[注册UCloud账号](https://passport.ucloud.cn/?invitation_code=C1xF974651066CB)，开通UIoT物联网通信云平台，云主机1台
+- **云资源：** [注册UCloud账号](https://passport.ucloud.cn/?invitation_code=C1xF974651066CB)，开通UIoT物联网通信云平台，云主机1台
 
  
 
@@ -72,44 +80,38 @@
 
     ![img](./images/clip_image022.png)
 
-11. 修改`mqtt_sample.c`，添加DHT11读取温湿度，并通过Topic：`/${ProductSN}/${DeviceSN}/upload/event ` publish消息到Ucloud物联网云平台
+11. 修改`dht11_sample.c`，修改头文件`drv_gpio.h`为`board.h`, 删除`static void read_temp_entry(void *parameter)`和`static int dht11_read_temp_sample(void)`函数，将读取温湿度的流程放到`mqtt_sample.c`中
 
-    - 修改函数`static void mqtt_test_thread(void)`函数中添加读取DHT11温湿度代码
+    ![img](./images/clip_image00111.png)
 
-    ​	![img](./images/clip_image024.png)
+12. 修改`mqtt_sample.c`，添加DHT11读取温湿度，并通过`Topic：/${ProductSN}/${DeviceSN}/upload/event`  publish消息到Ucloud物联网云平台
 
-    ​	![img](./images/clip_image026.png)
+    - 添加头文件   ​   
 
-    -  修改static int _publish_msg(void *client, msg_payload payload) 函数上报温湿度
+      ![img](./images/clip_image00311.png) 
 
-    ​	 ![img](./images/clip_image028.png)
+    - 修改`static int _publish_msg(void *client, msg_payload payload)` 函数上报温湿度   ​ 
 
-    - 修改static void mqtt_test_example (void)，并创建一个头文件声明该函数
+      ![img](./images/clip_image00511.png)
+
+    - 在`static void mqtt_test_thread(void)`函数中添加DHT11温湿度读取代码![img](./images/clip_image00711.png)![img](./images/clip_image00911.png)
+
+    - 修改`void mqtt_test_example (void)`，并创建一个头文件声明该函数   ​   ![img](./images/clip_image01111.png)
+     ![img](./images/clip_image01311.png)
     
-    ​	 ![img](./images/clip_image030.png)
+        **注：** `mqtt_sample.c`完成的工作包括： ①监听MQTT Topic：`/${ProductSN}/${DeviceSN}/upload/event `；②发送消息到MQTT Topic：`/${ProductSN}/${DeviceSN}/upload/event`。`mqtt_sample.c`中为了方便观察测试结果，使用的Topic同时具有发布&订阅权限，实际使用中建议参考[Topic管理](https://docs.ucloud.cn/iot/uiot-core/console_guide/product_device/topic)分别定义发布、订阅权限的Topic用于上下行通信。 
     
-    ​	 ![img](./images/clip_image032.png)
-    
-      **注：**mqtt_sample.c完成的工作包括：
-    
-       ①监听MQTT Topic：`/${ProductSN}/${DeviceSN}/upload/event` ；
-    
-       ②采集温湿度并发送消息到MQTT Topic：`/${ProductSN}/${DeviceSN}/upload/event`；
-    
-      `mqtt_sample.c`中为了方便观察测试结果，使用的Topic同时具有**发布&订阅**权限，实际使用中建议参考[Topic管理](https://docs.ucloud.cn/iot/uiot-core/console_guide/product_device/topic)分别定义**发布**、**订阅**权限的Topic用于**上下行**通信。 
+    - 在main函数中调用void mqtt_test_example (void)  ​  ![img](./images/clip_image01511.png)
 
-12. 在main函数中调用`void mqtt_test_example (void)`
-
-    ![img](./images/clip_image034.png)
 
 13. 编译并下载到目标开发板
 
-    ![img](./images/clip_image036.png)
+    ![img](./images/clip_image034.png)
 
-15. 规则引擎转发到http server
-    
+14. 规则引擎转发到http server
+
     - 准备httpserver，本例使用golang写一个监听8900，path为receive的http server，并将收到的数据打印
-    
+
       ```go
       package main
       
@@ -132,24 +134,19 @@
          http.ListenAndServe(":8900", nil)
       }
       ```
-    
+
     - 配置规则引擎
-    
-      ![img](./images/clip_image038.png) 
-    
-    - 后端业务服务器收到上行数据
-    
+
+      ![img](./images/clip_image036.png) 
+
+    - 后端业务服务器收到上行数据，与云平台日志记录相同
+
+      ![img](./images/clip_image038.png)
+
       ![img](./images/clip_image040.png)
-    
-      ![img](./images/clip_image042.png)
-    
+
       
-    
-15. 打开UIoT物联网日志功能，可以查看上行消息
-
-    
-
-
+      
 
 ## 业务服务下发控制消息（下行）详细教程：
 
@@ -328,19 +325,22 @@
    }
    ```
 
-   
-
 5. 最终目录结构
 
+    ![img](./images/clip_image042.png)
 
-
-![img](./images/clip_image042.png)
 
 6. 运行程序，下发数据
 
-\-   通过日志查看下发成功
+   - 通过日志查看下发成功
 
+     ![img](./images/clip_image0016.png)
 
+   - 设备端打印查看下发消息成功
 
-\-   设备端打印查看下发消息成功
+     ![img](./images/clip_image0036.png)
+
+ 
+
+ 
 
